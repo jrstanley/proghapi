@@ -85,8 +85,8 @@ self.addEventListener('fetch', function(event) {
       })
     );*/
   } else if (
-    CACHED_URLS.indexOf(requestURL.href) === -1 ||
-    CACHED_URLS.indexOf(requestURL.pathname) === -1
+    CACHED_URLS.indexOf(requestURL.href) !== -1 ||
+    CACHED_URLS.indexOf(requestURL.pathname) !== -1
   ) {
     event.respondWith(
       caches.open(CACHE_NAME).then(function(cache) {
