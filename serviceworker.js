@@ -47,8 +47,10 @@ var CACHED_URLS = [
     'styles.css'
 ];
 
+var googleMapsAPIJS = 'YOUR_GOOGLE_MAPURL';
+
 self.addEventListener('install', function(event) {
-  // Cache everything in CACHED_URLS. Installation will fail if something fails to cache
+  // Cache everything in CACHED_URLS. Installation fails if anything fails to cache
   event.waitUntil(
     caches.open(CACHE_NAME).then(function(cache) {
       return cache.addAll(CACHED_URLS);
@@ -57,18 +59,44 @@ self.addEventListener('install', function(event) {
 });
 
 self.addEventListener('fetch', function(event) {
-  event.respondWith(
-    fetch(event.request).catch(function() {
-      return caches.match(event.request).then(function(response) {
-        if (response) {
-          return response;
-        } else if (event.request.headers.get('accept').includes('text/html')) {
-          return caches.match('first.html');
-        }
-      });
-    })
-  );
+  var requestURL = new URL(event.request.url);
+  // Handle requests for index.html
+  if (requestURL.pathname === 'first.html') {
+    event.respondWith(
+      caches.open(CACHE_NAME).then(function(cache) {
+        return cache.match('first.html').then(function(cachedResponse) {
+          var fetchPromise = fetch('first.html').then(function(networkResponse) {
+            cache.put('first.html', networkResponse.clone());
+            return networkResponse;
+          });
+          return cachedResponse || fetchPromise;
+        });
+      })
+    );
+  // Handle requests for Google Maps JavaScript API file
+ /* } else if (requestURL.href === googleMapsAPIJS) {
+    event.respondWith(
+      fetch(
+        googleMapsAPIJS+'&'+Date.now(),
+        { mode: 'no-cors', cache: 'no-store' }
+      ).catch(function() {
+        return caches.match('offline-map.js');
+      })
+    );*/
+  } else if (
+    CACHED_URLS.indexOf(requestURL.href) === -1 ||
+    CACHED_URLS.indexOf(requestURL.pathname) === -1
+  ) {
+    event.respondWith(
+      caches.open(CACHE_NAME).then(function(cache) {
+        return cache.match(event.request).then(function(response) {
+          return response || fetch(event.request);
+        });
+      })
+    );
+  }
 });
+
 
 self.addEventListener('activate', function(event) {
   event.waitUntil(
