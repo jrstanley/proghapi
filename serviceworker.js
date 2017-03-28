@@ -42,7 +42,7 @@ var CACHED_URLS = [
   // JavaScript
     'material.js',
   // CSS and fonts
-    'https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en',
+    'https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&lang=en',
     'https://fonts.googleapis.com/icon?family=Material+Icons',
     'min-style.css',
     'styles.css'
