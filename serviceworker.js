@@ -40,6 +40,7 @@ var CACHED_URLS = [
   'eventsimages/example-work08.jpg',
   'eventsimages/example-work09.jpg',  
   // JavaScript
+    'material.js',
   // CSS and fonts
     'https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en',
     'https://fonts.googleapis.com/icon?family=Material+Icons',
