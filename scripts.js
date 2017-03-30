@@ -62,18 +62,30 @@ if(newsContainer){
         });
 }
 
-// navigator.geolocation.getCurrentPosition(location => {
-//     fetch(`http://samples.openweathermap.org/data/2.5/forecast?lat=${location.coords.latitude}&lon=${location.coords.longitude}&appid=0063c940f831620d7af4a83a6a7a0280`, {mode: 'no-cors'})
-//         .then(response => {
-//             console.log(response.json());
-//             return response.json();
-//         })
-//         .then(data => {
-//             console.log(data);
-//         })
-//         .catch(e => {
-//             console.log(e);
-//         });
-// }, error => {
-//     console.log(error);
-// });
+const askJackForm = document.getElementById("askJackForm");
+if(askJackForm){
+    const askJackFormSubmit = e => {
+        e.preventDefault();
+        const contact = {
+            "name": e.target.name.value,
+            "email": e.target.email.value,
+            "question": e.target.question.value,
+        };
+
+        fetch("http://jackcat.co.uk/", {mode: "no-cors", method: "POST", body: contact})
+            .then(response => {
+                console.log('hello response!', response);
+            }).catch(() => {
+                let allContacts = [];
+
+                const existingContacts = localStorage.getItem('contact');
+                if(existingContacts){
+                    allContacts = JSON.parse(existingContacts);
+                }
+
+                allContacts.push(contact);
+                localStorage.setItem('contact', JSON.stringify(allContacts));
+            });
+    };
+    askJackForm.addEventListener('submit', askJackFormSubmit, false);
+}
