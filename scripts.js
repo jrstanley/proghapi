@@ -62,7 +62,7 @@ if(newsContainer){
         });
 }
 
-const askJackForm = document.getElementById("askJackForm");
+const askJackForm = document.getElementById("askJack");
 if(askJackForm){
     const askJackFormSubmit = e => {
         e.preventDefault();
@@ -72,7 +72,7 @@ if(askJackForm){
             "question": e.target.question.value,
         };
 
-        fetch("http://jackcat.co.uk/", {mode: "no-cors", method: "POST", body: contact})
+        fetch("first.html", {mode: "no-cors", method: "POST", body: contact})
             .then(response => {
                 console.log('hello response!', response);
             }).catch(() => {
